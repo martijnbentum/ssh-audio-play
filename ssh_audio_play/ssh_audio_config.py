@@ -1,8 +1,9 @@
 import decouple
+config = decouple.AutoConfig(search_path=".")
 
 
 def get_audio_mode():
-    mode = decouple.config("AUDIO_MODE", default="remote")
+    mode = config("AUDIO_MODE", default="remote")
 
     if mode not in {"remote", "local"}:
         raise RuntimeError(
@@ -17,7 +18,7 @@ def require(keys):
 
     for key in keys:
         try:
-            values[key] = decouple.config(key)
+            values[key] = config(key)
         except decouple.UndefinedValueError:
             missing.append(key)
 
@@ -32,5 +33,5 @@ def require(keys):
 
 
 def get_optional(key, *, cast=None, default=None):
-    return decouple.config(key, cast=cast, default=default)
+    return config(key, cast=cast, default=default)
 
