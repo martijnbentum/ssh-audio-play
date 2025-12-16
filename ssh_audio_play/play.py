@@ -1,6 +1,6 @@
 import subprocess
 import shlex
-from .config import get_audio_mode, require, get_optional
+from .ssh_audio_config import get_audio_mode, require, get_optional
 
 
 def play_audio(path: str, verbose: bool = False, show_cmd: bool = False):
