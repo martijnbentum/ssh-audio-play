@@ -23,9 +23,9 @@ def build_play_command(path: str, verbose: bool = False) -> str:
         cfg = require(['AUDIO_LOCAL_PLAY'])
         audio_local_play = cfg['AUDIO_LOCAL_PLAY']
         cmd = f'{audio_local_play} {path}'
-    if not verbose:
-        cmd += ' -q'
-    return cmd
+        if not verbose:
+            cmd += ' -q'
+        return cmd
 
     if mode != 'remote':
         m = f'Unsupported AUDIO_MODE: {mode}, should be "local" or "remote"'
