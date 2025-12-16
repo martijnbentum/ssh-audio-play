@@ -25,9 +25,9 @@ pip install git+ssh://git@github.com/martijnbentum/ssh-audio-play.git#egg=ssh-au
 uv pip install git+ssh://git@github.com/martijnbentum/ssh-audio-play.git
 
 
-
 ### create an environment file for setting remote and local audio players
-save the following as `.env` in your working directory on the remote machine:
+save the following as `.env` in your working directory on the remote machine.
+If you update it you need to restart the python interpreter (python-decouple only reads it on startup).
 
 ```env
 #### Mode: "remote" or "local"
