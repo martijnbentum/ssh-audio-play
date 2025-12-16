@@ -16,17 +16,17 @@ from ssh_audio_play import play_audio
 play_audio("/path/to/remote/audio/file.wav")
 ```
 
-## Installation
+### Installation
 
-### pip
+#### pip
 pip install git+ssh://git@github.com/martijnbentum/ssh-audio-play.git#egg=ssh-audio-play
 
-### uv pip
+#### uv pip
 uv pip install git+ssh://git@github.com/martijnbentum/ssh-audio-play.git
 
 
 
-# create an environment file for setting remote and local audio players
+### create an environment file for setting remote and local audio players
 
 ```env
 #### Mode: "remote" or "local"
@@ -39,6 +39,6 @@ AUDIO_REMOTE_SOX=/usr/bin/sox
 AUDIO_LOCAL_PLAY=/usr/bin/play
 
 # --- Local mode ---
-# Only AUDIO\_MODE (set to local) and AUDIO\_LOCAL\_PLAY is required
+# Only AUDIO_MODE (set to local) and AUDIO_LOCAL_PLAY is required
 ```
 
