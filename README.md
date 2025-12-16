@@ -28,15 +28,17 @@ uv pip install git+ssh://git@github.com/martijnbentum/ssh-audio-play.git
 
 # create an environment file for setting remote and local audio players
 
+```env
 #### Mode: "remote" or "local"
-AUDIO\_MODE=remote
+AUDIO_MODE=remote
 
 # --- Remote mode ---
-AUDIO\_LOCAL\_USER=
-AUDIO\_SSH\_PORT=22 # Port on which to connect to remote machine in the example above this would be 222
-AUDIO\_REMOTE\_SOX=/usr/bin/sox
-AUDIO\_LOCAL\_PLAY=/usr/bin/play
+AUDIO_LOCAL_USER=
+AUDIO_SSH_PORT=22 # Port on which to connect to remote machine in the example above this would be 222
+AUDIO_REMOTE_SOX=/usr/bin/sox
+AUDIO_LOCAL_PLAY=/usr/bin/play
 
 # --- Local mode ---
 # Only AUDIO\_MODE (set to local) and AUDIO\_LOCAL\_PLAY is required
+```
 
