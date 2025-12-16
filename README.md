@@ -9,7 +9,7 @@ ssh -R 127.0.0.1:222:localhost:22 user@remote_machine
 
 Then you can use ssh-audio-play to stream audio from the remote machine to your local machine.
 
-in your python interpreter of the remote machine you can do:
+in your python interpreter on the remote machine you can do:
 
 ```python
 from ssh_audio_play import play_audio
