@@ -16,7 +16,7 @@ def play_audio(path: str, start: float | None = None, end: float | None = None,
     stdout, stderr = p.communicate()
     if verbose and stdout:
         print(f'Play stdout: {stdout}')
-    if stderr:
+    if verbose and stderr:
         print(f'Play stderr: {stderr}')
     
 
