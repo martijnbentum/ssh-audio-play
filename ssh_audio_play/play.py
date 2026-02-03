@@ -4,13 +4,21 @@ from .ssh_audio_config import get_audio_mode, require, get_optional
 
 
 def play_audio(path: str, start: float | None = None, end: float | None = None,
-    verbose: bool = False, show_cmd: bool = False):
+    wait: bool = False, verbose: bool = False, show_cmd: bool = False):
     '''
     Play audio locally or via SSH streaming.
     '''
     cmd = build_play_command(path, start, end, verbose=verbose)
     if show_cmd: print(f'Executing command: {cmd}')
-    subprocess.Popen(cmd, shell=True)
+    p = subprocess.Popen(cmd, shell=True, stdout - subprocess.PIPE,
+        stderr=subprocess.PIPE, text = True)
+    if not wait: return
+    stdout, stderr = p.communicate()
+    if verbose and stdout:
+        print(f'Play stdout: {stdout}')
+    if stderr:
+        print(f'Play stderr: {stderr}')
+    
 
 
 def build_play_command(path: str, start = None, end = None, duration = None, 
@@ -31,7 +39,7 @@ def build_play_command(path: str, start = None, end = None, duration = None,
         cmd = f'{audio_local_play} {path}'
         if not verbose:
             cmd += ' -q'
-        if start and duration:
+        if start is not None and duration is not None:
             cmd += f' trim {start} {duration}'
         elif start and not duration:
             cmd += f' trim {start} :'
@@ -52,7 +60,7 @@ def build_play_command(path: str, start = None, end = None, duration = None,
 
     cmd = ''
     cmd += f'{audio_remote_sox} {path} -t wav -'
-    if start and duration:
+    if start is not None and duration not None:
         cmd += f' trim {start} {duration}'
     elif start and not duration:
         cmd += f' trim {start} :'
@@ -60,9 +68,8 @@ def build_play_command(path: str, start = None, end = None, duration = None,
     cmd += f' | '
     cmd += f'ssh -p {port} '
     cmd += f'{audio_local_user}@localhost '
-    cmd += f'"{audio_local_play} -'
+    cmd += f'"{audio_local_play} '
     if not verbose:
         cmd += ' -q'
-    else: cmd += ' "'
-
+    cmd += ' -; echo __PLAY_DONE__"'
     return cmd
