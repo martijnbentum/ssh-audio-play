@@ -10,7 +10,7 @@ def play_audio(path: str, start: float | None = None, end: float | None = None,
     '''
     cmd = build_play_command(path, start, end, verbose=verbose)
     if show_cmd: print(f'Executing command: {cmd}')
-    p = subprocess.Popen(cmd, shell=True, stdout - subprocess.PIPE,
+    p = subprocess.Popen(cmd, shell=True, stdout = subprocess.PIPE,
         stderr=subprocess.PIPE, text = True)
     if not wait: return
     stdout, stderr = p.communicate()
@@ -60,7 +60,7 @@ def build_play_command(path: str, start = None, end = None, duration = None,
 
     cmd = ''
     cmd += f'{audio_remote_sox} {path} -t wav -'
-    if start is not None and duration not None:
+    if start is not None and duration is not None:
         cmd += f' trim {start} {duration}'
     elif start and not duration:
         cmd += f' trim {start} :'
