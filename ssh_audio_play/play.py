@@ -35,6 +35,7 @@ def build_play_command(path: str, start = None, end = None, duration = None,
             cmd += f' trim {start} {duration}'
         elif start and not duration:
             cmd += f' trim {start} :'
+        cmd += f' pad 0 0.15'
         return cmd
 
     if mode != 'remote':
@@ -54,12 +55,14 @@ def build_play_command(path: str, start = None, end = None, duration = None,
     if start and duration:
         cmd += f' trim {start} {duration}'
     elif start and not duration:
-        cmd += f' trim {start}'
+        cmd += f' trim {start} :'
+    cmd += f' pad 0 0.15'
     cmd += f' | '
     cmd += f'ssh -p {port} '
     cmd += f'{audio_local_user}@localhost '
-    cmd += f'"{audio_local_play} -"'
+    cmd += f'"{audio_local_play} -'
     if not verbose:
         cmd += ' -q'
+    else: cmd += ' "'
 
     return cmd
