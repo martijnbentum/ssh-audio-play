@@ -3,21 +3,27 @@ import shlex
 from .ssh_audio_config import get_audio_mode, require, get_optional
 
 
-def play_audio(path: str, verbose: bool = False, show_cmd: bool = False):
+def play_audio(path: str, start: float | None = None, end: float | None = None,
+    verbose: bool = False, show_cmd: bool = False):
     '''
     Play audio locally or via SSH streaming.
     '''
-    cmd = build_play_command(path, verbose=verbose)
+    cmd = build_play_command(path, start, end, verbose=verbose)
     if show_cmd: print(f'Executing command: {cmd}')
     subprocess.Popen(cmd, shell=True)
 
 
-def build_play_command(path: str, verbose: bool = False) -> str:
+def build_play_command(path: str, start = None, end = None, duration = None, 
+    verbose: bool = False) -> str:
     '''
     Load configuration from env and construct the playback command.
     '''
     mode = get_audio_mode()
     path = shlex.quote(path)
+    if start is not None and end is not None:
+        duration = round(end - start, 3)
+    elif start is not None and duration is not None:
+        end = start + duration
 
     if mode == 'local':  
         cfg = require(['AUDIO_LOCAL_PLAY'])
@@ -25,6 +31,10 @@ def build_play_command(path: str, verbose: bool = False) -> str:
         cmd = f'{audio_local_play} {path}'
         if not verbose:
             cmd += ' -q'
+        if start and duration:
+            cmd += f' trim {start} {duration}'
+        elif start and not duration:
+            cmd += f' trim {start} :'
         return cmd
 
     if mode != 'remote':
@@ -39,12 +49,17 @@ def build_play_command(path: str, verbose: bool = False) -> str:
 
     port = get_optional('AUDIO_SSH_PORT', cast=int, default=22)
 
-    cmd = (
-        f'{audio_remote_sox} {path} -t wav - | '
-        f'ssh -p {port} '
-        f'{audio_local_user}@localhost '
-        f'"{audio_local_play} -"'
-    )
+    cmd = ''
+    cmd += f'{audio_remote_sox} {path} -t wav -'
+    if start and duration:
+        cmd += f' trim {start} {duration}'
+    elif start and not duration:
+        cmd += f' trim {start}'
+    cmd += f' | '
+    cmd += f'ssh -p {port} '
+    cmd += f'{audio_local_user}@localhost '
+    cmd += f'"{audio_local_play} -"'
     if not verbose:
         cmd += ' -q'
+
     return cmd
