@@ -27,19 +27,19 @@ uv pip install git+ssh://git@github.com/martijnbentum/ssh-audio-play.git
 
 ### create an environment file for setting remote and local audio players
 save the following as `.env` in your working directory on the remote machine.
-If you update it you need to restart the python interpreter (python-decouple only reads it on startup).
+Process environment variables are checked first; `.env` is used as a fallback.
+Legacy `AUDIO_*` variable names are still accepted for compatibility.
 
 ```env
 #### Mode: "remote" or "local"
-AUDIO_MODE=remote
+SSH_AUDIO_PLAY_MODE=remote
 
 # --- Remote mode ---
-AUDIO_LOCAL_USER=#your_local_username
-AUDIO_SSH_PORT=22 # Port on which to connect to remote machine in the example above this would be 222
-AUDIO_REMOTE_SOX=/usr/bin/sox # path to sox on the remote machine
-AUDIO_LOCAL_PLAY=/usr/bin/play # path to play on the local machine (play is part of sox)
+SSH_AUDIO_PLAY_LOCAL_USER=#your_local_username
+SSH_AUDIO_PLAY_SSH_PORT=22 # Port on which to connect to remote machine in the example above this would be 222
+SSH_AUDIO_PLAY_REMOTE_SOX=/usr/bin/sox # path to sox on the remote machine
+SSH_AUDIO_PLAY_LOCAL_PLAY=/usr/bin/play # path to play on the local machine (play is part of sox)
 
 # --- Local mode ---
-# Only AUDIO_MODE (set to local) and AUDIO_LOCAL_PLAY is required
+# Only SSH_AUDIO_PLAY_MODE (set to local) and SSH_AUDIO_PLAY_LOCAL_PLAY is required
 ```
-

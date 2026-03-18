@@ -34,8 +34,8 @@ def build_play_command(path: str, start = None, end = None, duration = None,
         end = start + duration
 
     if mode == 'local':  
-        cfg = require(['AUDIO_LOCAL_PLAY'])
-        audio_local_play = cfg['AUDIO_LOCAL_PLAY']
+        cfg = require(['LOCAL_PLAY'])
+        audio_local_play = cfg['LOCAL_PLAY']
         cmd = f'{audio_local_play} {path}'
         if not verbose:
             cmd += ' -q'
@@ -47,16 +47,16 @@ def build_play_command(path: str, start = None, end = None, duration = None,
         return cmd
 
     if mode != 'remote':
-        m = f'Unsupported AUDIO_MODE: {mode}, should be "local" or "remote"'
+        m = f'Unsupported SSH_AUDIO_PLAY_MODE: {mode}, should be "local" or "remote"'
         raise RuntimeError(m)
 
-    cfg= require(['AUDIO_LOCAL_USER','AUDIO_REMOTE_SOX','AUDIO_LOCAL_PLAY'])
+    cfg= require(['LOCAL_USER','REMOTE_SOX','LOCAL_PLAY'])
 
-    audio_local_user = cfg['AUDIO_LOCAL_USER']
-    audio_remote_sox = cfg['AUDIO_REMOTE_SOX']
-    audio_local_play = cfg['AUDIO_LOCAL_PLAY']
+    audio_local_user = cfg['LOCAL_USER']
+    audio_remote_sox = cfg['REMOTE_SOX']
+    audio_local_play = cfg['LOCAL_PLAY']
 
-    port = get_optional('AUDIO_SSH_PORT', cast=int, default=22)
+    port = get_optional('SSH_PORT', cast=int, default=22)
 
     cmd = ''
     cmd += f'{audio_remote_sox} {path} -t wav -'
