@@ -25,9 +25,15 @@ pip install git+ssh://git@github.com/martijnbentum/ssh-audio-play.git#egg=ssh-au
 uv pip install git+ssh://git@github.com/martijnbentum/ssh-audio-play.git
 
 
-### create an environment file for setting remote and local audio players
-save the following as `.env` in your working directory on the remote machine.
+### configure remote and local audio players
+You can configure `ssh-audio-play` in either of these ways on the remote machine:
+
+1. Define the `SSH_AUDIO_PLAY_*` variables in your OS shell environment, for example in `~/.bash_profile`, `~/.bashrc`, `~/.zshrc`, or the equivalent for your shell.
+2. Or put the same variables in a local `.env` file in your working directory.
+
 Process environment variables are checked first; `.env` is used as a fallback.
+
+Example configuration:
 
 ```env
 #### Mode: "remote" or "local"
