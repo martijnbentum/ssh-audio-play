@@ -4,20 +4,30 @@ from .ssh_audio_config import get_audio_mode, require, get_optional
 
 
 def play_audio(path: str, start: float | None = None, end: float | None = None,
-    wait: bool = False, verbose: bool = False, show_cmd: bool = False):
+    wait: bool = False, verbose: bool = False, show_cmd: bool = False) -> None:
     '''
     Play audio locally or via SSH streaming.
     '''
+    mode = get_audio_mode()
     cmd = build_play_command(path, start, end, verbose=verbose)
     if show_cmd: print(f'Executing command: {cmd}')
     p = subprocess.Popen(cmd, shell=True, stdout = subprocess.PIPE,
         stderr=subprocess.PIPE, text = True)
-    if not wait: return
+    if not wait:
+        return None
     stdout, stderr = p.communicate()
     if verbose and stdout:
         print(f'Play stdout: {stdout}')
     if verbose and stderr:
         print(f'Play stderr: {stderr}')
+    if p.returncode != 0:
+        message = 'Audio playback failed'
+        if stderr and stderr.strip():
+            message += f': {stderr.strip()}'
+        raise RuntimeError(message)
+    if mode == 'remote' and '__PLAY_DONE__' not in stdout:
+        raise RuntimeError('Remote audio playback did not report completion.')
+    return None
     
 
 
@@ -71,5 +81,5 @@ def build_play_command(path: str, start = None, end = None, duration = None,
     cmd += f'"{audio_local_play} '
     if not verbose:
         cmd += ' -q'
-    cmd += ' -; echo __PLAY_DONE__"'
+    cmd += ' - && echo __PLAY_DONE__"'
     return cmd
