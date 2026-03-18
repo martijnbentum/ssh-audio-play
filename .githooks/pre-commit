@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -eu
+
+pyproject="pyproject.toml"
+
+current_version=$(
+  sed -n 's/^version = "\(.*\)"$/\1/p' "$pyproject" | head -n 1
+)
+
+if [ -z "$current_version" ]; then
+  echo "Unable to find version in $pyproject" >&2
+  exit 1
+fi
+
+IFS=. read -r major minor patch <<EOF_VERSION
+$current_version
+EOF_VERSION
+
+if [ -z "${major:-}" ] || [ -z "${minor:-}" ] || [ -z "${patch:-}" ]; then
+  echo "Version must be in major.minor.patch format: $current_version" >&2
+  exit 1
+fi
+
+next_patch=$((patch + 1))
+next_version="$major.$minor.$next_patch"
+
+sed -i.bak "s/^version = \"$current_version\"$/version = \"$next_version\"/" "$pyproject"
+rm -f "$pyproject.bak"
+
+git add "$pyproject"
