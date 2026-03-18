@@ -19,10 +19,10 @@ play_audio("/path/to/remote/audio/file.wav")
 ### Installation
 
 #### pip
-pip install git+ssh://git@github.com/martijnbentum/ssh-audio-play.git#egg=ssh-audio-play
+pip install git+https://git@github.com/martijnbentum/ssh-audio-play.git#egg=ssh-audio-play
 
 #### uv pip
-uv pip install git+ssh://git@github.com/martijnbentum/ssh-audio-play.git
+uv pip install git+https://git@github.com/martijnbentum/ssh-audio-play.git
 
 
 ### configure remote and local audio players
