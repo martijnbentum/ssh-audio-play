@@ -41,7 +41,7 @@ def build_play_command(path: str, start = None, end = None, duration = None,
             cmd += ' -q'
         if start is not None and duration is not None:
             cmd += f' trim {start} {duration}'
-        elif start and not duration:
+        elif start is not None and duration is None:
             cmd += f' trim {start} :'
         cmd += f' pad 0 0.15'
         return cmd
@@ -62,7 +62,7 @@ def build_play_command(path: str, start = None, end = None, duration = None,
     cmd += f'{audio_remote_sox} {path} -t wav -'
     if start is not None and duration is not None:
         cmd += f' trim {start} {duration}'
-    elif start and not duration:
+    elif start is not None and duration is None:
         cmd += f' trim {start} :'
     cmd += f' pad 0 0.15'
     cmd += f' | '

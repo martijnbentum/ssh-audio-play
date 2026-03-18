@@ -26,7 +26,7 @@ def require(keys):
         raise RuntimeError(
             "Missing audio configuration:\n"
             + "\n".join(f"  - {k}" for k in missing)
-            + "\n\nCreate a .env file (see .env.example)."
+            + "\n\nCreate a .env file (see env.example)."
         )
 
     return values
