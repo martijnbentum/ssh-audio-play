@@ -4,6 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ssh-audio-play"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = ["python-decouple"]
 description = "A tool to play audio files over SSH."
